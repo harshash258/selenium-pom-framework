@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
 public class SuiteListener implements ITestListener, IAnnotationTransformer {
     @Override
     public void onTestFailure(ITestResult result) {
-        String fileName = System.getProperty("user.dir") + "/screenshots/" + result.getMethod().getMethodName();
+        String fileName = System.getProperty("user.dir") + "/src/screenshots/" + result.getMethod().getMethodName();
         try {
             File file = ((TakesScreenshot) BaseTest.driver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(file, new File(fileName + ".png"));
@@ -28,7 +28,7 @@ public class SuiteListener implements ITestListener, IAnnotationTransformer {
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        String fileName = System.getProperty("user.dir") + "/screenshots/" + System.currentTimeMillis();
+        String fileName = System.getProperty("user.dir") + "/src/screenshots/" + System.currentTimeMillis();
         try {
             File file = ((TakesScreenshot) BaseTest.driver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(file, new File(fileName + ".png"));
