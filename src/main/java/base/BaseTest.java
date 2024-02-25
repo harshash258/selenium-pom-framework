@@ -16,6 +16,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.*;
 import utils.Constants;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.time.Duration;
 
@@ -23,10 +24,11 @@ public class BaseTest {
     public static WebDriver driver;
     ExtentReports reports;
     ExtentSparkReporter sparkReporter;
-    ExtentTest logger;
+    public static ExtentTest logger;
 
     @BeforeTest
     public void beforeTest(){
+        clearScreenshotFolder();
         sparkReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/src/reports");
         reports = new ExtentReports();
         reports.attachReporter(sparkReporter);
@@ -46,6 +48,7 @@ public class BaseTest {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
     }
+
 
     @AfterMethod
     public void afterMethod(ITestResult result){
@@ -77,6 +80,22 @@ public class BaseTest {
             WebDriverManager.edgedriver().setup();
             driver = new EdgeDriver();
 
+        }
+    }
+    public void clearScreenshotFolder(){
+        String folderName = System.getProperty("user.dir") + "/src/screenshots";
+        File folder = new File(folderName);
+
+        if (folder.exists()) {
+            for (File file : folder.listFiles()) {
+                if (file.isFile()) {
+                    if (!file.delete()) {
+                        logger.info("Failed to delete file: " + file.getName());
+                    }
+                }
+            }
+        } else {
+            System.out.println("Folder does not exist.");
         }
     }
 }

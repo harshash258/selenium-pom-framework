@@ -25,18 +25,6 @@ public class SuiteListener implements ITestListener, IAnnotationTransformer {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public void onTestSuccess(ITestResult result) {
-        String fileName = System.getProperty("user.dir") + "/src/screenshots/" + System.currentTimeMillis();
-        try {
-            File file = ((TakesScreenshot) BaseTest.driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(file, new File(fileName + ".png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
     public void transform(ITestAnnotation annotation, Class testClass, Constructor testConstructor, Method testMethod) {
         annotation.setRetryAnalyzer(RetryAnalyzer.class);

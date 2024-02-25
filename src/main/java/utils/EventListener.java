@@ -1,11 +1,16 @@
 package utils;
 
 import base.BaseTest;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
@@ -44,5 +49,17 @@ public class EventListener {
             case CLASSNAME -> wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(locatorValue)));
             default -> System.out.println("Element not Found");
         }
+    }
+    public String takeScreenShot(String description){
+        String fileName = System.getProperty("user.dir") + "\\src\\screenshots\\" + System.currentTimeMillis() + ".png";
+        try {
+            File file = ((TakesScreenshot) BaseTest.driver).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(file, new File(fileName));
+            BaseTest.logger.addScreenCaptureFromPath(fileName, description);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return fileName;
     }
 }

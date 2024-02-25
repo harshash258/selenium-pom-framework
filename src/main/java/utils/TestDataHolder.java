@@ -10,7 +10,7 @@ public class TestDataHolder {
 
     public BasePOJO fetchDataFromJSON() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        File jsonFile = new File( System.getProperty("user.dir") + "/src/testdata/test.json");
+        File jsonFile = new File( System.getProperty("user.dir") + "/src/main/resources/testdata/test.json");
         return objectMapper.readValue(jsonFile, BasePOJO.class);
     }
 }
