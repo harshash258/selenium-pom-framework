@@ -8,7 +8,10 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
 
+import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
@@ -50,7 +53,7 @@ public class EventListener {
             default -> System.out.println("Element not Found");
         }
     }
-    public String takeScreenShot(String description){
+    public void takeScreenShot(String description){
         String fileName = System.getProperty("user.dir") + "\\src\\screenshots\\" + System.currentTimeMillis() + ".png";
         try {
             File file = ((TakesScreenshot) BaseTest.driver).getScreenshotAs(OutputType.FILE);
@@ -60,6 +63,12 @@ public class EventListener {
             throw new RuntimeException(e);
         }
 
-        return fileName;
+    }
+    public void takeFullPageScreenShot(String description) throws IOException {
+        String fileName = System.getProperty("user.dir") + "\\src\\screenshots\\" + System.currentTimeMillis() + ".png";
+        Screenshot screenshot=new AShot().takeScreenshot(BaseTest.driver);
+        ImageIO.write(screenshot.getImage(),"PNG",new File(fileName));
+        BaseTest.logger.addScreenCaptureFromPath(fileName, description);
+
     }
 }
